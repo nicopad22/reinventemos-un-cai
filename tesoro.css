@@ -1,0 +1,713 @@
+@import url('https://fonts.cdnfonts.com/css/minecraft-4');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  --mc-font: 'Minecraft', 'Press Start 2P', monospace;
+  --mc-gui-bg: #c6c6c6;
+  --mc-gui-border-light: #ffffff;
+  --mc-gui-border-dark: #373737;
+  --mc-gui-border-outer: #000000;
+  --mc-slot-bg: #8b8b8b;
+  --mc-text-dark: #3f3f3f;
+  --mc-text-white: #ffffff;
+  --mc-text-gold: #ffaa00;
+  --mc-text-green: #55ff55;
+  --mc-btn-bg: #7f7f7f;
+  --mc-btn-hover: #9c9c9c;
+  --mc-btn-active: #5c5c5c;
+  --mc-nav-height: 64px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--mc-font);
+  color: #ffffff;
+  background-color: #191919;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Minecraft Deepslate / Stone Tiled Background */
+body {
+  background-color: #141414;
+  background-image: 
+    radial-gradient(#202020 15%, transparent 16%),
+    radial-gradient(#242424 15%, transparent 16%),
+    linear-gradient(45deg, #181818 25%, transparent 25%, transparent 75%, #181818 75%),
+    linear-gradient(45deg, #181818 25%, #111111 25%, #111111 75%, #181818 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px, 0 0, 16px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dark Vignette Overlay */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.82) 100%);
+  z-index: 10;
+}
+
+/* App Header */
+.app-header {
+  position: relative;
+  z-index: 50;
+  background: #2b2b2b;
+  border-bottom: 4px solid #111111;
+  box-shadow: inset 0 -3px 0 #1b1b1b, inset 0 3px 0 #4a4a4a;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.header-title-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-icon {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+}
+
+.header-title {
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: #ffff55;
+  text-shadow: 2px 2px #3f3f00;
+}
+
+.header-hint-btn {
+  background: #555555;
+  border: 2px solid;
+  border-color: #ffffff #222222 #222222 #ffffff;
+  color: #ffffaa;
+  font-family: var(--mc-font);
+  font-size: 11px;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-shadow: 1px 1px #000000;
+  transition: transform 0.05s, background 0.1s;
+}
+
+.header-hint-btn:active {
+  border-color: #222222 #ffffff #ffffff #222222;
+  transform: translate(1px, 1px);
+}
+
+/* Views Slider (Two tabs: Scanner & Inventory) */
+.main-viewport {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  width: 100%;
+  height: calc(100vh - 54px - var(--mc-nav-height));
+  z-index: 20;
+}
+
+.views-slider {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.view-page {
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 12px calc(var(--mc-nav-height) + 16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Active Tab Slider Positions */
+body[data-active-tab="scanner"] .views-slider {
+  transform: translateX(0%);
+}
+
+body[data-active-tab="inventory"] .views-slider {
+  transform: translateX(-50%);
+}
+
+/* Minecraft Box Card */
+.mc-box {
+  background: var(--mc-gui-bg);
+  border: 3px solid;
+  border-color: var(--mc-gui-border-light) var(--mc-gui-border-dark) var(--mc-gui-border-dark) var(--mc-gui-border-light);
+  box-shadow: 0 0 0 3px var(--mc-gui-border-outer), 0 6px 16px rgba(0, 0, 0, 0.6);
+  padding: 14px;
+  max-width: 440px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mc-box-title {
+  color: var(--mc-text-dark);
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ===================================================
+   SCANNER VIEW
+   =================================================== */
+.scanner-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.scanner-frame {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 320px;
+  background: #000000;
+  border: 4px solid #373737;
+  box-shadow: inset 0 0 0 2px #111111, 0 4px 12px rgba(0, 0, 0, 0.8);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#reader {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+}
+
+#reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Minecraft Crosshair / Reticle Overlay */
+.scanner-crosshair {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.crosshair-center {
+  width: 22px;
+  height: 22px;
+  position: relative;
+}
+
+.crosshair-center::before,
+.crosshair-center::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 2px #000000;
+}
+
+.crosshair-center::before {
+  top: 9px;
+  left: 0;
+  width: 22px;
+  height: 4px;
+}
+
+.crosshair-center::after {
+  top: 0;
+  left: 9px;
+  width: 4px;
+  height: 22px;
+}
+
+.scanner-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #ffff55;
+  box-shadow: 0 0 4px #000000;
+}
+
+.corner-tl { top: 18px; left: 18px; border-right: none; border-bottom: none; }
+.corner-tr { top: 18px; right: 18px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 18px; left: 18px; border-right: none; border-top: none; }
+.corner-br { bottom: 18px; right: 18px; border-left: none; border-top: none; }
+
+.scanner-status {
+  font-size: 11px;
+  color: #e0e0e0;
+  text-shadow: 1px 1px #000000;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 10px;
+}
+
+/* Manual Code Box */
+.manual-code-card {
+  background: #252525;
+  border: 2px solid;
+  border-color: #444444 #111111 #111111 #444444;
+  padding: 12px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.manual-title {
+  font-size: 10px;
+  color: #aaaaaa;
+  text-shadow: 1px 1px #000000;
+}
+
+.manual-form {
+  display: flex;
+  gap: 6px;
+}
+
+.mc-input {
+  flex-grow: 1;
+  background: #000000;
+  border: 2px solid;
+  border-color: #373737 #ffffff #ffffff #373737;
+  color: #ffffff;
+  font-family: var(--mc-font);
+  font-size: 11px;
+  padding: 8px;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.mc-input:focus {
+  border-color: #55ff55;
+}
+
+/* Minecraft Button */
+.mc-button {
+  background: var(--mc-btn-bg);
+  border: 3px solid;
+  border-color: var(--mc-gui-border-light) var(--mc-gui-border-dark) var(--mc-gui-border-dark) var(--mc-gui-border-light);
+  box-shadow: inset 0 0 0 1px #8f8f8f, 0 2px 4px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-family: var(--mc-font);
+  font-size: 11px;
+  padding: 8px 14px;
+  cursor: pointer;
+  text-shadow: 2px 2px #222222;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.1s;
+}
+
+.mc-button:hover {
+  background: var(--mc-btn-hover);
+}
+
+.mc-button:active {
+  border-color: var(--mc-gui-border-dark) var(--mc-gui-border-light) var(--mc-gui-border-light) var(--mc-gui-border-dark);
+  background: var(--mc-btn-active);
+  transform: translate(1px, 1px);
+}
+
+.mc-button-green {
+  background: #2a7c2a;
+}
+.mc-button-green:hover {
+  background: #399c39;
+}
+
+/* Dev Quick Test Codes (collapsible / small) */
+.dev-test-panel {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 360px;
+}
+
+.dev-test-btn {
+  font-size: 9px;
+  padding: 5px 8px;
+  background: #3a3a3a;
+  color: #ffff77;
+  border: 1px solid #555555;
+  cursor: pointer;
+  font-family: var(--mc-font);
+}
+
+.dev-test-btn:active {
+  background: #222222;
+}
+
+/* ===================================================
+   INVENTORY & CRAFTING VIEW
+   =================================================== */
+.crafting-view-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* The Minecraft Crafting Table GUI */
+.crafting-gui-wrapper {
+  position: relative;
+  width: min(92vw, 360px);
+  aspect-ratio: 300 / 283;
+  margin: 0 auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+}
+
+.crafting-gui-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/craftingtable.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Slots Overlay */
+.slots-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+.slot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.slot:hover,
+.slot.touch-hover {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.slot.selected-slot {
+  box-shadow: inset 0 0 0 2px #ffff55;
+  background-color: rgba(255, 255, 85, 0.25);
+}
+
+/* Item inside Slot */
+.item-icon {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.4));
+}
+
+/* Result Slot Animation */
+.slot-result {
+  cursor: pointer;
+}
+
+.slot-result .item-icon {
+  animation: craftPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes craftPulse {
+  0% { transform: scale(0.95); filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)); }
+  100% { transform: scale(1.08); filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9)); }
+}
+
+/* Floating Hand / Cursor Item */
+.floating-hand-item {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.floating-hand-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.7));
+}
+
+/* Minecraft Inventory Controls below GUI */
+.inventory-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* ===================================================
+   BOTTOM NAVBAR (Fixed at bottom)
+   =================================================== */
+.bottom-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--mc-nav-height);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: #222222;
+  border-top: 4px solid #111111;
+  box-shadow: inset 0 2px 0 #444444, 0 -4px 12px rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-tab {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: none;
+  border-left: 2px solid #181818;
+  border-right: 2px solid #333333;
+  color: #888888;
+  font-family: var(--mc-font);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+
+.nav-tab:first-child {
+  border-left: none;
+}
+.nav-tab:last-child {
+  border-right: none;
+}
+
+.nav-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-tab.active {
+  background: #353535;
+  color: #ffff55;
+  box-shadow: inset 0 3px 0 #ffaa00;
+  text-shadow: 1px 1px #000000;
+}
+
+.nav-tab:active {
+  background: #2a2a2a;
+}
+
+/* ===================================================
+   MINECRAFT MODALS & POPUPS
+   =================================================== */
+.mc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.mc-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mc-modal-window {
+  background: var(--mc-gui-bg);
+  border: 4px solid;
+  border-color: var(--mc-gui-border-light) var(--mc-gui-border-dark) var(--mc-gui-border-dark) var(--mc-gui-border-light);
+  box-shadow: 0 0 0 4px var(--mc-gui-border-outer), 0 8px 30px rgba(0, 0, 0, 0.9);
+  max-width: 380px;
+  width: 100%;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  transform: scale(0.92);
+  transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.mc-modal-backdrop.open .mc-modal-window {
+  transform: scale(1);
+}
+
+.modal-header-tag {
+  background: #ffaa00;
+  color: #000000;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border: 2px solid #000000;
+  text-transform: uppercase;
+}
+
+.modal-title {
+  color: #2b2b2b;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.modal-sprite-box {
+  width: 72px;
+  height: 72px;
+  background: #8b8b8b;
+  border: 3px solid;
+  border-color: #373737 #ffffff #ffffff #373737;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-sprite-box img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.modal-message {
+  color: #2f2f2f;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 4px 0;
+}
+
+.modal-clue-box {
+  background: #392b1a;
+  border: 2px solid #1a1208;
+  color: #fff2c4;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  box-shadow: inset 0 2px 0 #5a452a;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Victory Cake Popup */
+.cake-win-image {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  animation: cakeCelebration 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes cakeCelebration {
+  0% { transform: translateY(0) scale(1) rotate(0deg); }
+  50% { transform: translateY(-10px) scale(1.1) rotate(3deg); }
+  100% { transform: translateY(0) scale(1) rotate(-3deg); }
+}
+
+/* Confetti Canvas for Victory */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+}
+
+/* Toast Notifications */
+.mc-toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: rgba(16, 0, 16, 0.95);
+  border: 2px solid #5500aa;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+  z-index: 250;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.25s ease;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.mc-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mc-toast.error {
+  border-color: #aa0000;
+  color: #ffaaaa;
+}
+
+.mc-toast.success {
+  border-color: #00aa00;
+  color: #aaffaa;
+}

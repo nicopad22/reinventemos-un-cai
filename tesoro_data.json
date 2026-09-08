@@ -1,0 +1,90 @@
+{
+  "title": "Busqueda del Tesoro - Reinventemos el CAI",
+  "recipe": {
+    "grid": [
+      "milk", "milk", "milk",
+      "sugar", "egg", "sugar",
+      "wheat", "wheat", "wheat"
+    ],
+    "result": {
+      "id": "cake",
+      "name": "Pastel de Minecraft",
+      "sprite": "assets/minecraft-cake.png",
+      "description": "Un pastel de minecraft :)"
+    }
+  },
+  "items": {
+    "milk": {
+      "id": "milk",
+      "name": "Cubo de Leche",
+      "sprite": "assets/milk.png",
+      "description": "Leche fresca."
+    },
+    "sugar": {
+      "id": "sugar",
+      "name": "Azucar",
+      "sprite": "assets/sugar.png",
+      "description": "Dulce y refinada a partir de cana de azucar."
+    },
+    "egg": {
+      "id": "egg",
+      "name": "Huevo",
+      "sprite": "assets/egg.png",
+      "description": "Puesto por una gallina muy madrugadora."
+    },
+    "wheat": {
+      "id": "wheat",
+      "name": "Trigo",
+      "sprite": "assets/wheat.png",
+      "description": "Cultivado y cosechado con esmero."
+    },
+    "cake": {
+      "id": "cake",
+      "name": "Pastel de Minecraft",
+      "sprite": "assets/minecraft-cake.png",
+      "description": "El pastel definitivo de Minecraft"
+    }
+  },
+  "steps": [
+    {
+      "step": 1,
+      "itemId": "milk",
+      "quantity": 3,
+      "code": "CAI-LECHE-2026",
+      "itemName": "Cubos de Leche",
+      "hint": "Pista inicial: Busca donde la energia se recarga y el cafe nunca falta en los recreos...",
+      "redeemedMessage": "Has encontrado la Leche! Se agregaron 3 Cubos de Leche a tu inventario.",
+      "nextHint": "Pista para el siguiente ingrediente: Algo dulce espera cerca del silencio de los libros y el estudio..."
+    },
+    {
+      "step": 2,
+      "itemId": "sugar",
+      "quantity": 2,
+      "code": "CAI-AZUCAR-2026",
+      "itemName": "Azucar",
+      "hint": "Pista actual: Algo dulce espera cerca del silencio de los libros y el estudio...",
+      "redeemedMessage": "Has encontrado el Azucar! Se agregaron 2 unidades de Azucar a tu inventario.",
+      "nextHint": "Pista para el siguiente ingrediente: Busca donde nacen los proyectos y las ideas toman forma..."
+    },
+    {
+      "step": 3,
+      "itemId": "egg",
+      "quantity": 1,
+      "code": "CAI-HUEVO-2026",
+      "itemName": "Huevo",
+      "hint": "Pista actual: Busca donde nacen los proyectos y las ideas toman forma...",
+      "redeemedMessage": "Has encontrado el Huevo! Se agrego 1 Huevo a tu inventario.",
+      "nextHint": "Pista para el ultimo ingrediente: El trigo dorado se encuentra donde los estudiantes disfrutan del aire libre..."
+    },
+    {
+      "step": 4,
+      "itemId": "wheat",
+      "quantity": 3,
+      "code": "CAI-TRIGO-2026",
+      "itemName": "Trigo",
+      "hint": "Pista actual: El trigo dorado se encuentra donde los estudiantes disfrutan del aire libre...",
+      "redeemedMessage": "Has encontrado el Trigo! Se agregaron 3 gavillas de Trigo a tu inventario.",
+      "nextHint": "Conseguiste todos los ingredientes necesarios! Abre la Mesa de Crafteo en el menu inferior para craftear el pastel."
+    }
+  ]
+}

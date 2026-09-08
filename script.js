@@ -36,6 +36,10 @@ function triggerPulse(element) {
 
 function updateCountdown() {
   const now = new Date();
+  if (now.getTime() >= targetDate.getTime()) {
+    window.location.replace('tesoro.html' + window.location.search);
+    return;
+  }
   const diff = Math.max(0, targetDate.getTime() - now.getTime());
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));

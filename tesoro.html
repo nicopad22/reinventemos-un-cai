@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Busqueda del Tesoro • Reinventemos el CAI</title>
+  <link rel="stylesheet" href="tesoro.css">
+  <script src="assets/html5-qrcode.min.js"></script>
+</head>
+<body data-active-tab="scanner">
+  <div class="vignette"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-title-box">
+      <img src="assets/minecraft-cake.png" alt="Cake" class="header-icon">
+      <span class="header-title">TESORO CAI</span>
+    </div>
+    <button id="btn-open-hints" class="header-hint-btn" title="Ver pistas disponibles">
+      <span>📜</span>
+      <span>Pistas</span>
+    </button>
+  </header>
+
+  <!-- Main Viewport with Smooth Slider -->
+  <main class="main-viewport">
+    <div class="views-slider" id="views-slider">
+      
+      <!-- TAB 1: QR CODE SCANNER -->
+      <section class="view-page" id="view-scanner" aria-label="Escanear Codigo QR">
+        <div class="scanner-container">
+          <div class="scanner-frame">
+            <div id="reader"></div>
+            <div class="scanner-crosshair">
+              <div class="crosshair-center"></div>
+              <div class="scanner-corner corner-tl"></div>
+              <div class="scanner-corner corner-tr"></div>
+              <div class="scanner-corner corner-bl"></div>
+              <div class="scanner-corner corner-br"></div>
+            </div>
+          </div>
+
+          <!-- Manual Code Fallback -->
+          <div class="manual-code-card">
+            <form id="form-manual-code" class="manual-form">
+              <input type="text" id="input-manual-code" class="mc-input" autocomplete="off">
+              <button type="submit" class="mc-button mc-button-green">Canjear</button>
+            </form>
+          </div>
+
+          <!-- Quick Test Helper for Testing & Verification -->
+          <div class="dev-test-panel">
+            <button type="button" class="dev-test-btn" data-code="CAI-LECHE-2026">Test: 1. Leche (x3)</button>
+            <button type="button" class="dev-test-btn" data-code="CAI-AZUCAR-2026">Test: 2. Azucar (x2)</button>
+            <button type="button" class="dev-test-btn" data-code="CAI-HUEVO-2026">Test: 3. Huevo (x1)</button>
+            <button type="button" class="dev-test-btn" data-code="CAI-TRIGO-2026">Test: 4. Trigo (x3)</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: CRAFTING TABLE & INVENTORY -->
+      <section class="view-page" id="view-inventory" aria-label="Mesa de Crafteo e Inventario">
+        <div class="crafting-view-container">
+
+          <!-- The Minecraft Crafting Table GUI Window -->
+          <div class="crafting-gui-wrapper" id="crafting-gui-wrapper">
+            <div class="crafting-gui-bg"></div>
+
+            <!-- Interactive Slots Layer -->
+            <div class="slots-layer" id="slots-layer">
+              <!-- 3x3 Crafting Grid Slots (indices 0 to 8) -->
+              <!-- Result Slot (index 9) -->
+              <!-- 27 Inventory Slots (indices 10 to 36) -->
+              <!-- 9 Hotbar Slots (indices 37 to 45) -->
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="inventory-actions">
+            <button type="button" id="btn-clear-crafting" class="mc-button">
+              Limpiar Mesa
+            </button>
+            <button type="button" id="btn-reset-game" class="mc-button" style="color: #ffaaaa;">
+              Reiniciar
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Bottom Navbar -->
+  <nav class="bottom-navbar" aria-label="Navegacion principal">
+    <button class="nav-tab active" data-target="scanner" id="nav-btn-scanner">
+      <span class="nav-icon">📷</span>
+      <span>Escanear QR</span>
+    </button>
+    <button class="nav-tab" data-target="inventory" id="nav-btn-inventory">
+      <span class="nav-icon">🔨</span>
+      <span>Mesa de Crafteo</span>
+    </button>
+  </nav>
+
+  <!-- Floating Hand Item (follows cursor/touch when moving items) -->
+  <div class="floating-hand-item" id="floating-hand-item">
+    <img id="floating-item-img" src="" alt="">
+  </div>
+
+  <!-- MODAL 1: Ingrediente Canjeado -->
+  <div class="mc-modal-backdrop" id="modal-redeem">
+    <div class="mc-modal-window">
+      <div class="modal-header-tag">Ingrediente Desbloqueado!</div>
+      <h2 class="modal-title" id="redeem-item-name">Cubo de Leche</h2>
+      <div class="modal-sprite-box">
+        <img id="redeem-item-img" src="assets/milk.png" alt="Ingrediente">
+      </div>
+      <p class="modal-message" id="redeem-message">
+        Has obtenido este ingrediente! Se agrego a tu inventario.
+      </p>
+      <div class="modal-clue-box">
+        <strong style="color: #ffaa00; display: block; margin-bottom: 4px;">Siguiente Pista:</strong>
+        <span id="redeem-next-hint">...</span>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="mc-button mc-button-green" id="btn-close-redeem-continue">
+          Buscar siguiente pista
+        </button>
+        <button type="button" class="mc-button" id="btn-close-redeem-inventory">
+          Ir a Mesa de Crafteo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Pastel Crafteado (Victoria) -->
+  <div class="mc-modal-backdrop" id="modal-win">
+    <div class="mc-modal-window">
+      <div class="modal-header-tag" style="background: #55ff55;">Logro Completado!</div>
+      <h2 class="modal-title" style="color: #ffff55; text-shadow: 2px 2px #000;">PASTEL CRAFTEADO!</h2>
+      <img src="assets/minecraft-cake.png" alt="Pastel" class="cake-win-image">
+      <p class="modal-message" style="font-size: 12px; font-weight: bold; color: #111;">
+        Felicitaciones! Has completado con exito la busqueda del tesoro y horneado el legendario pastel del CAI.
+      </p>
+      <div class="modal-clue-box" style="text-align: center;">
+        🎂 Muestra esta pantalla al equipo del CAI para reclamar tu premio!
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="mc-button mc-button-green" id="btn-close-win">
+          Genial!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Historial de Pistas -->
+  <div class="mc-modal-backdrop" id="modal-hints">
+    <div class="mc-modal-window">
+      <div class="modal-header-tag">Libro de Pistas</div>
+      <h2 class="modal-title">Tu Aventura</h2>
+      <div id="hints-list" style="width: 100%; display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; text-align: left;">
+        <!-- Filled dynamically -->
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="mc-button" id="btn-close-hints">
+          Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="mc-toast" id="mc-toast">Notificacion</div>
+
+  <!-- Canvas for Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="tesoro.js"></script>
+</body>
+</html>

@@ -8,6 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>
+    (function() {
+      const urlParam = new URLSearchParams(window.location.search).get('target');
+      const targetDate = urlParam ? new Date(urlParam) : new Date('2026-09-08T13:30:00-03:00');
+      if (!isNaN(targetDate.getTime()) && Date.now() >= targetDate.getTime()) {
+        window.location.replace('tesoro.html' + window.location.search);
+      }
+    })();
+  </script>
 </head>
 <body>
   <!-- Atmospheric canvas: deep void particles and cyan aura -->
