@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>• • : • • : • • : • •</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Atmospheric canvas: deep void particles and cyan aura -->
+  <canvas id="abyss"></canvas>
+
+  <div class="vignette"></div>
+  <div class="ambient-glow"></div>
+
+  <main class="countdown-stage" aria-hidden="true">
+    <div class="monolith">
+      <div class="time-block">
+        <span class="digit" id="days">00</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="time-block">
+        <span class="digit" id="hours">00</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="time-block">
+        <span class="digit" id="minutes">00</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="time-block">
+        <span class="digit" id="seconds">00</span>
+      </div>
+    </div>
+
+    <!-- Microsoft Modern Loading Ring (Windows Progress Ring) -->
+    <div class="ms-loader-container">
+      <div class="ms-loader-glow"></div>
+      <div class="ms-loader">
+        <div class="ms-dot"></div>
+        <div class="ms-dot"></div>
+        <div class="ms-dot"></div>
+        <div class="ms-dot"></div>
+        <div class="ms-dot"></div>
+        <div class="ms-dot"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Social links bar at the bottom -->
+  <nav class="social-bar" aria-label="Social Links">
+    <a href="https://www.instagram.com/reinventemos.cai/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+      <svg class="social-icon" viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+    </a>
+    <a href="https://chat.whatsapp.com/I087qEOCIvl2MuvKYZgj1f" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="WhatsApp">
+      <svg class="social-icon" viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+        <path d="M17.472 14.382c-.301-.15-1.777-.877-2.052-.977-.276-.101-.477-.15-.678.15-.2.3-.777.977-.952 1.177-.176.2-.352.226-.653.076-.3-.15-1.267-.467-2.414-1.49-.893-.797-1.496-1.782-1.672-2.083-.176-.301-.019-.464.131-.613.136-.135.301-.351.452-.527.15-.175.2-.3.3-.5.1-.2.05-.375-.025-.526-.075-.15-.678-1.633-.928-2.235-.244-.585-.493-.506-.678-.515-.175-.008-.376-.01-.577-.01-.2 0-.527.075-.802.375-.276.3-1.054 1.03-1.054 2.512 0 1.482 1.079 2.912 1.23 3.113.15.2 2.124 3.243 5.145 4.547.719.31 1.28.496 1.718.635.723.23 1.381.198 1.902.12.58-.087 1.777-.727 2.028-1.43.25-.703.25-1.305.175-1.43-.075-.126-.276-.201-.577-.352zM12.042.002C5.404.002.017 5.39.017 12.03c0 2.12.553 4.183 1.603 6.002L.002 24l6.155-1.614c1.758.959 3.743 1.464 5.885 1.464 6.638 0 12.025-5.388 12.025-12.028 0-3.212-1.25-6.231-3.522-8.503C18.273 1.047 15.254.002 12.042.002zm0 21.84c-1.808 0-3.58-.486-5.126-1.405l-.367-.218-3.81 1 .998-3.712-.239-.38A9.78 9.78 0 0 1 2.19 12.03c0-5.432 4.419-9.852 9.852-9.852 2.632 0 5.106 1.026 6.967 2.887a9.8 9.8 0 0 1 2.885 6.965c0 5.433-4.42 9.852-9.852 9.852z"/>
+      </svg>
+    </a>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>
