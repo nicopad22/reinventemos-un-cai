@@ -757,14 +757,48 @@ class TreasureHuntGame {
   }
 
   // URL Parameter Redemption Check
+  // Extract code from full URLs (e.g. http://reinventemos.cl/tesoro?qr=qpkcNh) or raw strings
+  extractCode(raw) {
+    if (!raw) return '';
+    let str = String(raw).trim();
+
+    // Check for URL query param (?qr=..., ?code=..., ?c=...)
+    try {
+      let urlObj;
+      if (str.startsWith('http://') || str.startsWith('https://') || str.startsWith('//')) {
+        urlObj = new URL(str, window.location.origin);
+      } else if (str.includes('?')) {
+        urlObj = new URL(str, 'http://dummy.local');
+      }
+
+      if (urlObj) {
+        const param = urlObj.searchParams.get('qr') || 
+                      urlObj.searchParams.get('code') || 
+                      urlObj.searchParams.get('c');
+        if (param) return param.trim();
+      }
+    } catch (e) {
+      // Fallback to regex
+    }
+
+    // Regex fallback for ?qr=... or &qr=...
+    const match = str.match(/[?&](?:qr|code|c)=([^&#]+)/i);
+    if (match) {
+      return decodeURIComponent(match[1]).trim();
+    }
+
+    return str;
+  }
+
+  // URL Parameter Redemption Check on page load
   checkUrlRedeem() {
     const params = new URLSearchParams(window.location.search);
-    const code = params.get('code') || params.get('c');
+    const code = params.get('qr') || params.get('code') || params.get('c');
     if (code) {
       setTimeout(() => {
         this.redeemCode(code);
         // Clean URL query without reloading
-        window.history.replaceState({}, '', 'tesoro.html');
+        window.history.replaceState({}, '', window.location.pathname);
       }, 400);
     }
   }
@@ -773,20 +807,14 @@ class TreasureHuntGame {
   redeemCode(rawCode) {
     if (!this.data || !this.data.steps) return;
 
-    // Sanitize: uppercase, trim, and extract parameter if URL is scanned
-    let cleanCode = String(rawCode).trim().toUpperCase();
-    if (cleanCode.includes('CODE=')) {
-      try {
-        const u = new URL(cleanCode);
-        cleanCode = (u.searchParams.get('code') || cleanCode).trim().toUpperCase();
-      } catch (e) {
-        const m = cleanCode.match(/CODE=([^&]+)/i);
-        if (m) cleanCode = m[1].trim().toUpperCase();
-      }
-    }
+    const cleanCode = this.extractCode(rawCode);
+    if (!cleanCode) return;
 
-    // Find step index matching this code
-    const matchedStepIndex = this.data.steps.findIndex(s => s.code.toUpperCase() === cleanCode);
+    // Match exact case first, then case-insensitive
+    let matchedStepIndex = this.data.steps.findIndex(s => s.code === cleanCode);
+    if (matchedStepIndex === -1) {
+      matchedStepIndex = this.data.steps.findIndex(s => s.code.toLowerCase() === cleanCode.toLowerCase());
+    }
 
     if (matchedStepIndex === -1) {
       this.showToast('Codigo QR no reconocido. Busca un codigo valido del CAI.', 'error');

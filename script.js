@@ -8,7 +8,7 @@ function getTargetDate() {
     }
   }
 
-  return new Date('2026-09-08T13:30:00-03:00');
+  return new Date('2026-09-08T13:45:00-03:00');
 }
 
 const targetDate = getTargetDate();
