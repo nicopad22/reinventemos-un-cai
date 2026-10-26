@@ -1,13 +1,10 @@
 {
-  "name": "reinventemos-un-cai",
+  "name": "countdown",
   "version": "1.0.0",
-  "description": "Búsqueda del Tesoro Minecraft y Contador CAI",
+  "private": true,
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "start": "node scripts/dev.js",
+    "dev": "node --watch scripts/dev.js"
+  }
 }
